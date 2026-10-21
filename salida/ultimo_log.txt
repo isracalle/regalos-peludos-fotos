@@ -1,1 +1,23 @@
-
+Tienda: alfombrilla-para-el-comedero-con-el-nombre-de-tu-mascota/1
+Tienda: alfombrilla-para-el-comedero-con-el-nombre-de-tu-mascota/2
+  fondo IA ok salon
+  fondo IA ok navidad
+  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106eb49670>') b''
+  fondo IA ok estudio
+Tienda: alfombrilla-para-el-comedero-con-el-nombre-de-tu-mascota/3
+  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106e5e2b10>') b''
+  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106e5e29d0>') b''
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106e5e3560>') b''
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106e5e3010>') b''
+  fondo IA ok estudio
+Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/1
+Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/2
+  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x71106e5e3560>') b''
+Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/3
+Tienda: manta-personalizada-con-la-foto-de-tu-perro/1
+Tienda: calcetines-personalizados-con-la-foto-de-tu-mascota/1
+Tienda: calcetines-personalizados-con-la-foto-de-tu-mascota/2
+Tienda: calcetines-personalizados-con-la-foto-de-tu-mascota/3
+Tienda: adorno-siempre-en-nuestro-corazon-con-la-foto-de-tu-mascota/1
+Tienda: adorno-siempre-en-nuestro-corazon-con-la-foto-de-tu-mascota/2
+Tienda: adorno-siempre-en-nuestro-corazon-con-la-foto-de-tu-mascota/3
