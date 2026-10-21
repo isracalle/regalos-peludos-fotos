@@ -35,6 +35,6 @@ jobs:
         run: |
           git config user.name "Robot de fotos"
           git config user.email "robot@regalospeludos.shop"
-          git add -A tienda salida fondos
+          mkdir -p fondos && git add -A tienda salida fondos
           git diff --cached --quiet || git commit -m "Fotos procesadas $(date -u +%F_%H%M)"
           git pull --rebase && git push
