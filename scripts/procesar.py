@@ -100,9 +100,9 @@ def recortar(img_bytes):
 def fondo_ia(escena, seed):
     prompt = ESCENAS[escena][0] + ", photorealistic, vertical, no people, no text, no logos"
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt) +
-           f"?width={W}&height={H}&seed={seed}&nologo=true&model=flux")
+           f"?width={W}&height={H + 200}&seed={seed}&nologo=true&model=flux")
     global IA_FALLOS
-    if IA_FALLOS >= 3:
+    if IA_FALLOS >= 6:
         return None
     data = get(url, timeout=120)
     try:
@@ -110,12 +110,26 @@ def fondo_ia(escena, seed):
         if im.size[0] < 500:
             raise ValueError("imagen pequeña")
         log("  fondo IA ok", escena)
-        return im.resize((W, H), Image.LANCZOS)
+        im = im.resize((W, int(W * im.size[1] / im.size[0])), Image.LANCZOS)
+        return im.crop((0, 0, W, H))  # recorta abajo (marca de agua del generador)
     except Exception as e:
         IA_FALLOS += 1
         log("  fondo IA falla:", escena, repr(e)[:120], (data or b"")[:120])
         return None
 IA_FALLOS = 0
+
+VARIANTES = 5
+def fondo(escena, seed):
+    """Banco de fondos reutilizables en fondos/: menos peticiones a la IA, más rápido."""
+    k = seed % VARIANTES
+    ruta = f"fondos/{escena}_{k}.jpg"
+    if os.path.exists(ruta):
+        return Image.open(ruta).convert("RGB")
+    im = fondo_ia(escena, 1000 + k) or (time.sleep(15) or fondo_ia(escena, 2000 + k))
+    if im:
+        os.makedirs("fondos", exist_ok=True); im.save(ruta, quality=88)
+        return im
+    return fondo_dibujado(escena, seed)
 
 def fondo_dibujado(escena, seed):
     """Plan B sin internet: degradado + bokeh desenfocado."""
@@ -152,7 +166,7 @@ def componer(recorte, fondo, escala=0.72):
     s = min(W * escala / rw, H * 0.5 / rh)
     p = recorte.resize((max(1, int(rw * s)), max(1, int(rh * s))), Image.LANCZOS)
     x = (W - p.size[0]) // 2
-    y = int(H * 0.74) - p.size[1]  # apoyado sobre la "mesa", por encima de la zona de textos inferior
+    y = int(H * 0.78) - p.size[1]  # apoyado sobre la "mesa", por encima de la zona de textos inferior
     # sombra
     sh = Image.new("RGBA", fondo.size, (0, 0, 0, 0))
     ImageDraw.Draw(sh).ellipse([x + p.size[0] * .08, y + p.size[1] - 30, x + p.size[0] * .92, y + p.size[1] + 40], fill=(0, 0, 0, 120))
@@ -176,8 +190,8 @@ def procesar_imagen(data, carpeta, n, escenas, base_seed):
         destino = f"{carpeta}/escena_{esc}_{n}.jpg"
         if os.path.exists(destino):
             continue
-        fondo = fondo_ia(esc, seed) or fondo_dibujado(esc, seed)
-        componer(rec, fondo).save(destino, quality=90)
+        fnd = fondo(esc, seed)
+        componer(rec, fnd).save(destino, quality=90)
         print("  ->", destino)
 
 def sync_tienda(max_fotos=3):

@@ -1,0 +1,6 @@
+{
+  "id": "2026-10-21-prueba",
+  "producto": "Prueba del robot (taza de café, foto libre de Wikimedia)",
+  "imagenes": ["https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG"],
+  "escenas": ["jardin", "cama"]
+}
