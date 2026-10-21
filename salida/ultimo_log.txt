@@ -1,3 +1,1 @@
-  fondo IA ok jardin
-  fondo IA falla: cama UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f197b59a9d0>') b''
-  fondo IA falla: cama UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f197b59a9d0>') b''
+
