@@ -12,8 +12,6 @@ concurrency:
   cancel-in-progress: false
 env:
   U2NET_HOME: /home/runner/.u2net
-env:
-  U2NET_HOME: /home/runner/.u2net
 jobs:
   fotos:
     runs-on: ubuntu-latest
