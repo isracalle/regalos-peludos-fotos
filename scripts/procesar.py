@@ -33,8 +33,8 @@ LOG = []
 def log(*a):
     msg = " ".join(str(x) for x in a); print(msg); LOG.append(msg)
 
-def get(url, timeout=60):
-    for i in range(3):
+def get(url, timeout=60, intentos=3):
+    for i in range(intentos):
         try:
             r = requests.get(url, headers=UA, timeout=timeout)
             if r.status_code == 200:
@@ -104,7 +104,7 @@ def fondo_ia(escena, seed):
     global IA_FALLOS
     if IA_FALLOS >= 6:
         return None
-    data = get(url, timeout=120)
+    data = get(url, timeout=90, intentos=1)
     try:
         im = Image.open(io.BytesIO(data)).convert("RGB")
         if im.size[0] < 500:
