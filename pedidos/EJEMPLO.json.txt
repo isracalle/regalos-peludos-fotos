@@ -1,0 +1,8 @@
+{
+  "id": "2026-10-21-manta-proveedor",
+  "producto": "Manta personalizada",
+  "imagenes": ["https://url-de-la-foto-del-proveedor-1.jpg", "https://url-2.jpg"],
+  "escenas": ["salon", "navidad", "cama"]
+}
+Escenas disponibles: salon, navidad, estudio, jardin, cama, halloween.
+Para pedir fotos nuevas, crea un archivo pedidos/<id>.json (sin .txt). El robot deja el resultado en salida/<id>/.

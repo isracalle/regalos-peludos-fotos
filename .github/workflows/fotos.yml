@@ -1,0 +1,36 @@
+name: Robot de fotos
+on:
+  push:
+    paths: ["pedidos/**"]
+  schedule:
+    - cron: "17 5 * * *"   # cada día ~7:17 (Madrid): revisa fotos nuevas de la tienda
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fotos
+  cancel-in-progress: false
+env:
+  U2NET_HOME: /home/runner/.u2net
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: rembg-isnet
+      - run: pip install "rembg[cpu]==2.0.67" pillow requests
+      - run: python scripts/procesar.py todo
+      - name: Guardar resultados
+        run: |
+          git config user.name "Robot de fotos"
+          git config user.email "robot@regalospeludos.shop"
+          git add -A tienda salida
+          git diff --cached --quiet || git commit -m "Fotos procesadas $(date -u +%F_%H%M)"
+          git pull --rebase && git push
