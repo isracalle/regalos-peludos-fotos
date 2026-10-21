@@ -124,12 +124,12 @@ def fondo(escena, seed):
     k = seed % VARIANTES
     ruta = f"fondos/{escena}_{k}.jpg"
     if os.path.exists(ruta):
-        return Image.open(ruta).convert("RGB")
+        return Image.open(ruta).convert("RGB"), True
     im = fondo_ia(escena, 1000 + k) or (time.sleep(15) or fondo_ia(escena, 2000 + k))
     if im:
         os.makedirs("fondos", exist_ok=True); im.save(ruta, quality=88)
-        return im
-    return fondo_dibujado(escena, seed)
+        return im, True
+    return fondo_dibujado(escena, seed), False
 
 def fondo_dibujado(escena, seed):
     """Plan B sin internet: degradado + bokeh desenfocado."""
@@ -175,13 +175,15 @@ def componer(recorte, fondo, escala=0.72):
     out = fondo.convert("RGB")
     return ImageEnhance.Contrast(out).enhance(1.04)
 
-def procesar_imagen(data, carpeta, n, escenas, base_seed):
+def procesar_imagen(data, carpeta, n, escenas, base_seed, rehacer_dibujados=False):
+    """Devuelve True si todas las escenas tienen fondo realista (IA)."""
+    todo_ia = True
     os.makedirs(carpeta, exist_ok=True)
     Image.open(io.BytesIO(data)).convert("RGB").save(f"{carpeta}/foto_{n}.jpg", quality=90)
     try:
         rec = recortar(data)
     except Exception as e:
-        print("  sin recorte:", e); return
+        log("  sin recorte:", e); return True
     rec.save(f"{carpeta}/recorte_{n}.png")
     for esc in escenas:
         if esc not in ESCENAS:
@@ -190,9 +192,12 @@ def procesar_imagen(data, carpeta, n, escenas, base_seed):
         destino = f"{carpeta}/escena_{esc}_{n}.jpg"
         if os.path.exists(destino):
             continue
-        fnd = fondo(esc, seed)
+        fnd, ia = fondo(esc, seed)
         componer(rec, fnd).save(destino, quality=90)
-        print("  ->", destino)
+        if not ia:
+            todo_ia = False
+        print("  ->", destino, "(IA)" if ia else "(dibujado)")
+    return todo_ia
 
 def sync_tienda(max_fotos=3):
     data = get(f"{TIENDA}/products.json?limit=250")
@@ -214,8 +219,8 @@ def sync_tienda(max_fotos=3):
             carpeta = f"tienda/{h}"
             for f in glob.glob(f"{carpeta}/*_{n}.*"):
                 os.remove(f)
-            procesar_imagen(b, carpeta, n, DEFAULT_ESCENAS, int(hashlib.md5(h.encode()).hexdigest()[:6], 16))
-            estado[clave] = firma
+            ok = procesar_imagen(b, carpeta, n, DEFAULT_ESCENAS, int(hashlib.md5(h.encode()).hexdigest()[:6], 16))
+            estado[clave] = firma if ok else firma + "|dibujado"  # se rehace en la próxima pasada
         json.dump(estado, open(estado_path, "w"), indent=1, ensure_ascii=False)
     # índice legible
     with open("tienda/INDICE.md", "w") as f:

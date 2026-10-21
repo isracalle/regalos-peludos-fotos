@@ -3,7 +3,7 @@ on:
   push:
     paths: ["pedidos/**"]
   schedule:
-    - cron: "17 5 * * *"   # cada día ~7:17 (Madrid): revisa fotos nuevas de la tienda
+    - cron: "17 5,17 * * *"   # ~7:17 y ~19:17 (Madrid): fotos nuevas de la tienda y rehace fondos dibujados
   workflow_dispatch:
     inputs:
       modo:
