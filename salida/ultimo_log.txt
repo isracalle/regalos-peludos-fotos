@@ -1,0 +1,49 @@
+Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/1
+  fondo IA ok salon
+  fondo IA ok navidad
+  fondo IA ok estudio
+Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/2
+  fondo IA ok salon
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c1acfe0>') b''
+  fondo IA ok estudio
+Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/3
+  fondo IA ok salon
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c39efc0>') b''
+  fondo IA ok estudio
+Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/1
+  fondo IA ok salon
+  fondo IA ok navidad
+  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c39f3d0>') b''
+Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/3
+Tienda: pegatina-negra-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: pegatina-negra-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: lienzo-negro-personalizado-con-la-foto-de-tu-mascota/1
+Tienda: lienzo-negro-personalizado-con-la-foto-de-tu-mascota/2
+Tienda: lienzo-negro-personalizado-con-la-foto-de-tu-mascota/3
+Tienda: cojin-negro-personalizado-con-la-foto-de-tu-mascota/1
+Tienda: cojin-negro-personalizado-con-la-foto-de-tu-mascota/2
+Tienda: cojin-negro-personalizado-con-la-foto-de-tu-mascota/3
+Tienda: taza-negra-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: taza-negra-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: taza-negra-personalizada-con-la-foto-de-tu-mascota/3
+Tienda: adorno-navideno-personalizado-con-la-foto-de-tu-mascota/1
+Tienda: adorno-navideno-personalizado-con-la-foto-de-tu-mascota/2
+Tienda: adorno-navideno-personalizado-con-la-foto-de-tu-mascota/3
+Tienda: libreta-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: libreta-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: libreta-personalizada-con-la-foto-de-tu-mascota/3
+Tienda: pegatina-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: pegatina-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: cojin-personalizado-con-la-foto-de-tu-mascota/1
+Tienda: cojin-personalizado-con-la-foto-de-tu-mascota/2
+Tienda: cojin-personalizado-con-la-foto-de-tu-mascota/3
+Tienda: lienzo-personalizado-con-la-foto-de-tu-mascota/1
+Tienda: lienzo-personalizado-con-la-foto-de-tu-mascota/2
+Tienda: lienzo-personalizado-con-la-foto-de-tu-mascota/3
+Tienda: sudadera-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: sudadera-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: sudadera-personalizada-con-la-foto-de-tu-mascota/3
+Tienda: taza-personalizada-con-la-foto-de-tu-mascota/1
+Tienda: taza-personalizada-con-la-foto-de-tu-mascota/2
+Tienda: taza-personalizada-con-la-foto-de-tu-mascota/3
