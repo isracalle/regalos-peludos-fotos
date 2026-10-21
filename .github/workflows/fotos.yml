@@ -37,4 +37,8 @@ jobs:
           git config user.email "robot@regalospeludos.shop"
           mkdir -p fondos && git add -A tienda salida fondos
           git diff --cached --quiet || git commit -m "Fotos procesadas $(date -u +%F_%H%M)"
-          git pull --rebase && git push
+          for i in 1 2 3; do
+            git pull --rebase -X theirs && git push && exit 0
+            git rebase --abort 2>/dev/null; sleep 10
+          done
+          exit 1
