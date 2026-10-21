@@ -1,19 +1,19 @@
 Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/1
   fondo IA ok salon
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff351a7b060>') b''
   fondo IA ok navidad
+  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff351dd3650>') b''
   fondo IA ok estudio
 Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/2
+  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff351dd3ce0>') b''
   fondo IA ok salon
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c1acfe0>') b''
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff3526eb6a0>') b''
+  fondo IA ok navidad
+  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff351dd3510>') b''
   fondo IA ok estudio
 Tienda: adorno-navideno-negro-personalizado-con-la-foto-de-tu-mascota/3
-  fondo IA ok salon
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c39efc0>') b''
-  fondo IA ok estudio
+  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7ff351dd3510>') b''
 Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/1
-  fondo IA ok salon
-  fondo IA ok navidad
-  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7f7e3c39f3d0>') b''
 Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/2
 Tienda: libreta-negra-personalizada-con-la-foto-de-tu-mascota/3
 Tienda: pegatina-negra-personalizada-con-la-foto-de-tu-mascota/1
