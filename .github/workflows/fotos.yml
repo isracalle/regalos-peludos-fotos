@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "17 5 * * *"   # cada día ~7:17 (Madrid): revisa fotos nuevas de la tienda
   workflow_dispatch:
+    inputs:
+      modo:
+        description: "todo | tienda | pedidos | rehacer"
+        default: "todo"
 permissions:
   contents: write
 concurrency:
@@ -25,8 +29,8 @@ jobs:
         with:
           path: ~/.u2net
           key: rembg-isnet
-      - run: pip install "rembg[cpu]==2.0.67" pillow requests
-      - run: python scripts/procesar.py todo
+      - run: pip install "rembg[cpu]==2.0.67" pillow requests scipy numpy
+      - run: python scripts/procesar.py ${{ inputs.modo || 'todo' }}
       - name: Guardar resultados
         run: |
           git config user.name "Robot de fotos"

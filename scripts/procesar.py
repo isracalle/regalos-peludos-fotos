@@ -29,13 +29,9 @@ ESCENAS = {
 }
 DEFAULT_ESCENAS = ["salon", "navidad", "estudio"]
 
-_session = None
-def rembg_session():
-    global _session
-    if _session is None:
-        from rembg import new_session
-        _session = new_session("isnet-general-use")
-    return _session
+LOG = []
+def log(*a):
+    msg = " ".join(str(x) for x in a); print(msg); LOG.append(msg)
 
 def get(url, timeout=60):
     for i in range(3):
@@ -49,10 +45,55 @@ def get(url, timeout=60):
         time.sleep(3 * (i + 1))
     return None
 
+_sesiones = {}
+def sesion(nombre):
+    if nombre not in _sesiones:
+        from rembg import new_session
+        _sesiones[nombre] = new_session(nombre)
+    return _sesiones[nombre]
+
+def fondo_por_bordes(rgb):
+    """Fondo claro y liso conectado con los bordes de la foto (mockups sobre blanco)."""
+    import numpy as np
+    from scipy import ndimage
+    a = np.asarray(rgb).astype(float)
+    g = a.mean(axis=2)
+    gs = ndimage.gaussian_filter(g, 1.0)
+    grad = np.hypot(ndimage.sobel(gs, 0), ndimage.sobel(gs, 1)) / 8
+    sat = a.max(axis=2) - a.min(axis=2)
+    cand = (g >= 205) & (sat <= 18) & (grad < 6)
+    lab, _ = ndimage.label(cand)
+    borde = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
+    bg = np.isin(lab, list(borde))
+    return ndimage.binary_closing(bg, iterations=1, border_value=1)
+
 def recortar(img_bytes):
+    import numpy as np
+    from scipy import ndimage
     from rembg import remove
-    out = remove(img_bytes, session=rembg_session())
-    im = Image.open(io.BytesIO(out)).convert("RGBA")
+    orig = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+    orig.thumbnail((1280, 1280))
+    buf = io.BytesIO(); orig.save(buf, "PNG"); png = buf.getvalue()
+    union = np.zeros(orig.size[::-1], bool)
+    for modelo in ("isnet-general-use", "u2net"):
+        try:
+            o = Image.open(io.BytesIO(remove(png, session=sesion(modelo)))).convert("RGBA").resize(orig.size)
+            union |= ndimage.binary_fill_holes(np.asarray(o.getchannel("A")) > 60)
+        except Exception as e:
+            log("  modelo", modelo, "falla:", e)
+    fg = union.copy()
+    bg = fondo_por_bordes(orig)
+    if bg.mean() > 0.15:  # foto sobre fondo blanco: completa partes blancas del producto
+        cerca = ndimage.binary_dilation(union, iterations=max(10, orig.size[0] // 9))
+        fg |= ndimage.binary_opening(ndimage.binary_fill_holes(~bg), iterations=2) & cerca
+    fg = ndimage.binary_fill_holes(ndimage.binary_opening(fg, iterations=2))
+    # quedarse con las piezas grandes
+    lab, n = ndimage.label(fg)
+    if n > 1:
+        tam = ndimage.sum(fg, lab, range(1, n + 1))
+        fg = np.isin(lab, [i + 1 for i, t in enumerate(tam) if t >= tam.max() * 0.04])
+    alfa = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.0))
+    im = orig.convert("RGBA"); im.putalpha(alfa)
     bbox = im.getchannel("A").point(lambda a: 255 if a > 20 else 0).getbbox()
     return im.crop(bbox) if bbox else im
 
@@ -60,16 +101,21 @@ def fondo_ia(escena, seed):
     prompt = ESCENAS[escena][0] + ", photorealistic, vertical, no people, no text, no logos"
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt) +
            f"?width={W}&height={H}&seed={seed}&nologo=true&model=flux")
-    data = get(url, timeout=180)
-    if not data:
+    global IA_FALLOS
+    if IA_FALLOS >= 3:
         return None
+    data = get(url, timeout=120)
     try:
         im = Image.open(io.BytesIO(data)).convert("RGB")
         if im.size[0] < 500:
-            return None
+            raise ValueError("imagen pequeña")
+        log("  fondo IA ok", escena)
         return im.resize((W, H), Image.LANCZOS)
-    except Exception:
+    except Exception as e:
+        IA_FALLOS += 1
+        log("  fondo IA falla:", escena, repr(e)[:120], (data or b"")[:120])
         return None
+IA_FALLOS = 0
 
 def fondo_dibujado(escena, seed):
     """Plan B sin internet: degradado + bokeh desenfocado."""
@@ -83,10 +129,16 @@ def fondo_dibujado(escena, seed):
     bok = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     bd = ImageDraw.Draw(bok)
     luz = (255, 214, 150) if escena in ("navidad", "halloween", "salon") else (255, 255, 255)
-    for _ in range(45):
-        r = rnd.randint(25, 110); x = rnd.randint(-50, W + 50); y = rnd.randint(0, int(H * .6))
-        bd.ellipse([x - r, y - r, x + r, y + r], fill=luz + (rnd.randint(25, 70),))
-    im = Image.alpha_composite(im.convert("RGBA"), bok.filter(ImageFilter.GaussianBlur(18))).convert("RGB")
+    for _ in range(22):
+        r = rnd.randint(18, 60); x = rnd.randint(-30, W + 30); y = rnd.randint(int(H * .05), int(H * .6))
+        bd.ellipse([x - r, y - r, x + r, y + r], fill=luz + (rnd.randint(30, 80),))
+    im = Image.alpha_composite(im.convert("RGBA"), bok.filter(ImageFilter.GaussianBlur(9))).convert("RGB")
+    # luz central suave (viñeta)
+    vin = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(vin).ellipse([-W * .3, H * .1, W * 1.3, H * .95], fill=255)
+    vin = vin.filter(ImageFilter.GaussianBlur(220))
+    oscuro = ImageEnhance.Brightness(im).enhance(0.72)
+    im = Image.composite(im, oscuro, vin)
     # "mesa" en primer plano
     mesa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(mesa).rectangle([0, int(H * .68), W, H], fill=tuple(int(v * .75) for v in c2) + (235,))
@@ -141,7 +193,7 @@ def sync_tienda(max_fotos=3):
             firma = img["src"].split("?")[0]
             if estado.get(clave) == firma:
                 continue
-            print("Tienda:", clave)
+            log("Tienda:", clave)
             b = get(img["src"])
             if not b:
                 continue
@@ -178,5 +230,10 @@ if __name__ == "__main__":
     modo = sys.argv[1] if len(sys.argv) > 1 else "todo"
     if modo in ("todo", "tienda"):
         sync_tienda()
+    if modo == "rehacer":  # vuelve a procesar todas las fotos de la tienda
+        if os.path.exists("tienda/estado.json"): os.remove("tienda/estado.json")
+        sync_tienda()
     if modo in ("todo", "pedidos"):
         pedidos()
+    os.makedirs("salida", exist_ok=True)
+    open("salida/ultimo_log.txt", "w").write("\n".join(LOG[-200:]) + "\n")
