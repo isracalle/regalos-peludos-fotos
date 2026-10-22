@@ -1,10 +1,3 @@
-Tienda: alfombrilla-para-el-comedero-con-el-nombre-de-tu-mascota/3
 Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/3
-  fondo IA ok salon
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c46980>') b''
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c46980>') b''
-  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c464d0>') b''
-  fondo IA ok estudio
+  fondo IA ok navidad
 Tienda: calcetines-personalizados-con-la-foto-de-tu-mascota/1
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460e0a340>') b''
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460e09c10>') b''
