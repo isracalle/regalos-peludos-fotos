@@ -1,13 +1,10 @@
 Tienda: alfombrilla-para-el-comedero-con-el-nombre-de-tu-mascota/3
-  fondo IA ok salon
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7eed7b0>') b''
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7eed7b0>') b''
-Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/2
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7d42700>') b''
-  fondo IA ok navidad
 Tienda: cartel-de-recuerdo-con-la-foto-de-tu-mascota-metacrilato-con-soporte-de-madera/3
-  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7d42a70>') b''
-  fondo IA falla: salon UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7d425c0>') b''
-  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x7db0e7d42bb0>') b''
+  fondo IA ok salon
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c46980>') b''
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c46980>') b''
+  fondo IA falla: estudio UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460c464d0>') b''
+  fondo IA ok estudio
 Tienda: calcetines-personalizados-con-la-foto-de-tu-mascota/1
-Tienda: adorno-siempre-en-nuestro-corazon-con-la-foto-de-tu-mascota/3
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460e0a340>') b''
+  fondo IA falla: navidad UnidentifiedImageError('cannot identify image file <_io.BytesIO object at 0x712460e09c10>') b''
